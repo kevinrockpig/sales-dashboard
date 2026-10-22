@@ -17,7 +17,17 @@ def check_password():
         )
     if st.button("確認"):
         input_hash = hashlib.sha256(user_input.encode()).hexdigest()
-        if input_hash == correct_hash:
+
+        # 讀取 Secrets
+        secret_hash = st.secrets.get("DEMO_PASSWORD_HASH", None)
+        
+        # 暫時性的除錯輸出（除錯完後刪除）
+        st.write("--- 🔍 除錯資訊 ---")
+        st.write(f"你輸入密碼產生的 Hash：`{input_hash}`")
+        st.write(f"Secrets 讀到的 Hash：`{secret_hash}`")
+        st.write("--------------------")
+
+        if secret_hash and input_hash == secret_hash.strip():
             st.session_state["password_correct"] = True
             st.rerun()
         else:
