@@ -11,10 +11,13 @@ def check_password():
 
     st.subheader("🔒 系統受保護，請輸入存取密碼")
     user_input = st.text_input("輸入密碼", type="password")
-    
+    correct_hash = st.secrets.get(
+            "DEMO_PASSWORD_HASH", 
+            "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"
+        )
     if st.button("確認"):
         input_hash = hashlib.sha256(user_input.encode()).hexdigest()
-        if input_hash == st.secrets["DEMO_PASSWORD_HASH"]:
+        if input_hash == correct_hash:
             st.session_state["password_correct"] = True
             st.rerun()
         else:
